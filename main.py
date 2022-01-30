@@ -9,7 +9,7 @@ import torch.nn.functional as F
 # Settings.
 #
 
-torch.cuda.set_device(4)
+# torch.cuda.set_device(0)
 learning_rate = 0.001
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -57,8 +57,8 @@ def to_one_hot(x, length):
 
 def test():
     network.eval()
-    test_loss = 0
-    correct = 0
+    test_loss = 0.
+    correct = 0.
     total_samples = 0
     with torch.no_grad():
         for i_batch, sample_batched in enumerate(test_data_loader):
@@ -105,7 +105,7 @@ def train(epoch):
     return train_loss
 
 
-num_epochs = 1000
+num_epochs = 30
 best_correct = 0.0
 corrects = []
 for epoch in range(1, num_epochs + 1):

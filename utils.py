@@ -1,6 +1,7 @@
 import numpy as np
 import scipy.sparse as sp
 import torch
+from torch.utils.data import Dataset
 import sys
 import pickle as pkl
 import networkx as nx
@@ -397,7 +398,7 @@ class DatasetLoader(Dataset):
         else:
             with open("data/{}/{}.all.features".format(dataset_name, dataset_name), 'rb') as f:
                 feats = pkl.load(f)
-                self.features = feats[int(0.5 * len(feats)):]
+                self.features = feats[-int(0.5 * len(feats)):]
             with open("data/{}/{}.all.adj".format(dataset_name, dataset_name), 'rb') as f:
                 self.adjs = pkl.load(f)[-int(len(self.features)):]
             with open("data/{}/{}.all.label".format(dataset_name, dataset_name), 'rb') as f:

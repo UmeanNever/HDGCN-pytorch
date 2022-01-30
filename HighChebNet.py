@@ -32,5 +32,5 @@ class HighChebNet(nn.Module):
         votes = self.transform_weights.matmul(x)
         norm_value = self.layerNorm(votes.mean(dim=1, keepdim=False).squeeze(-1))
         aggregated_value, forward_attn_score = self.forward_attention(value, norm_value, value)
-        diffused_value, backward_attn_score = self.feedback_cross_attentions(aggregated_value, value, aggregated_value)
+        diffused_value, backward_attn_score = self.feedback_attention(aggregated_value, value, aggregated_value)
         return diffused_value, aggregated_value, forward_attn_score, backward_attn_score

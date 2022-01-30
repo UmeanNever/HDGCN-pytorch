@@ -7,20 +7,20 @@ from utils import clean_str
 import torch
 
 word_embeddings = dict()
-with open('glove.840B.300d.txt', 'r') as f:
+with open('glove.6B.300d.txt', 'r', encoding='utf-8') as f:
     for line in f.readlines():
         data = line.split(' ')
         word_embeddings[str(data[0])] = list(map(float, data[1:]))
 word_embedding_dim = 300
 
-docs = open("data/mr/mr.clean.txt", 'r')
+docs = open("data/mr/text_train.txt", 'r', encoding='utf-8')
 doc_list = docs.readlines()
 docs.close()
 
 # build vocab
 word_set = set()
 for doc_words in doc_list:
-    words = doc_words.split()
+    words = doc_words.lower().strip().split()
     for word in words:
         word_set.add(word)
 word_set.add("<pad>")
@@ -29,7 +29,7 @@ vocab = list(word_set)
 vocab_size = len(vocab)
 oov = np.random.uniform(-0.01, 0.01, (vocab_size, word_embedding_dim))
 
-labels = open("data/mr/mr.txt", 'r')
+labels = open("data/mr/label_train.txt", 'r', encoding='utf-8')
 label_list = labels.readlines()
 labels.close()
 
@@ -180,7 +180,7 @@ all_labels = []
 all_features = []
 all_sentences = []
 max_seq_len = 35
-for i in tqdm(range(len(doc_list))):
+for i in tqdm(np.random.permutation(np.arange(len(doc_list)))):
     doc = doc_list[i].lower().strip()
     # doc = clean_str(doc[0]) + " " + clean_str(doc[1])
     doc = doc.split()[:max_seq_len]
